@@ -1,0 +1,10 @@
+/db/*
+!/db/.gitkeep
+/db_dump/*
+!/db_dump/.gitkeep
+/scripts/*
+!/scripts/.gitkeep
+/log/*
+!/log/.gitkeep
+
+.env

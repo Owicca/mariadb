@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+
+  db_mariadb:
+    image: mariadb:10.3.34
+    container_name: db_mariadb
+    environment:
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+    user: "1000:1000"
+    networks:
+      - db_net
+    volumes:
+      - ./config/my.cnf:/etc/mysql/my.cnf
+      - ./config/conf.d/:/etc/mysql/conf.d/
+      - ./db:/var/lib/mysql
+      - ./log/:/var/log/mysql/
+      - ./db_dump:/db
+      - ./scripts:/scripts
+  db_adminer:
+    image: adminer
+    container_name: db_adminer
+    working_dir: /var/www/html
+    networks:
+      - db_net
+    ports:
+      - 5903:8080
+    volumes:
+      - ./db_dump:/db
+    depends_on:
+      - db_mariadb
+
+networks:
+  db_net:
+    name: db_net
